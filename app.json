@@ -3,8 +3,6 @@
     "name": "appbank",
     "slug": "appbank",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"]
   }
 }
