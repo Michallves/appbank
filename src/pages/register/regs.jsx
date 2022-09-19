@@ -9,9 +9,7 @@ import {
   Platform,
 } from "react-native";
 import styles from "./styles";
-import firebase from "../../config/firebase";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+
 import { TextInput } from "react-native-paper";
 
 export default ({ navigation }) => {
@@ -24,26 +22,7 @@ export default ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  function register() {
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        const db = getFirestore();
-        setDoc(doc(db, "users", user.uid), {
-          name: name,
-          email: email,
-          cpf: cpf,
-          tel: tel,
-          address: address,
-          typeAccount: typeAccount,
-        });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-  }
+  
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView

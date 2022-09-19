@@ -53,4 +53,13 @@ export default styles = StyleSheet.create({
     color: "black",
     fontSize: 15,
   },
+  buttonAdmin: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  textButtonAdmin: {
+    fontSize: 15,
+    fontWeight: "bold",
+  },
 });

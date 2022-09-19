@@ -1,19 +1,24 @@
-import React, { useEffect } from "react";
+import React from "react";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useData } from "./context";
 
 import Preload from "../pages/preload";
 
 import Login from "../pages/login/login";
-import login2 from "../pages/login/login2";
+import Login2 from "../pages/login/login2";
 
 import Cpf from "../pages/register/cpf";
 import Name from "../pages/register/name";
 import Email from "../pages/register/email";
-import Tel from "../pages/register/tel";
+import Phone from "../pages/register/phone";
 import Address from "../pages/register/address";
+import TypeAccount from "../pages/register/typeAccount";
+import PasswordRegister from "../pages/register/password/password";
+import ConfirmPasswordRegister from "../pages/register/password/confirmPassword";
 
 import Home from "../pages/home";
+import Drawer from "./drawer";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +27,6 @@ export default function () {
 
   return (
     <Stack.Navigator
-      initialRouteName="address"
       screenOptions={{
         headerBackTitleVisible: false,
         headerShadowVisible: false,
@@ -37,6 +41,7 @@ export default function () {
             component={Preload}
             options={{ headerShown: false, title: "Inicio" }}
           />
+
           <Stack.Screen
             name="login"
             component={Login}
@@ -44,8 +49,10 @@ export default function () {
           />
           <Stack.Screen
             name="login2"
-            component={login2}
-            options={{ title: "senha" }}
+            component={Login2}
+            options={{
+              title: "senha",
+            }}
           />
           <Stack.Screen
             name="register"
@@ -55,16 +62,16 @@ export default function () {
           <Stack.Screen
             name="name"
             component={Name}
-            options={{ title: "Nome" }}
+            options={{ title: "Nome completo" }}
           />
           <Stack.Screen
             name="email"
             component={Email}
-            options={{ title: "Email" }}
+            options={{ title: "E-mail" }}
           />
           <Stack.Screen
-            name="tel"
-            component={Tel}
+            name="phone"
+            component={Phone}
             options={{ title: "Telefone" }}
           />
           <Stack.Screen
@@ -72,13 +79,33 @@ export default function () {
             component={Address}
             options={{ title: "Endereço" }}
           />
+          <Stack.Screen
+            name="typeAccount"
+            component={TypeAccount}
+            options={{ title: "Tipo de conta" }}
+          />
+          <Stack.Screen
+            name="passwordRegister"
+            component={PasswordRegister}
+            options={{ title: "Senha" }}
+          />
+          <Stack.Screen
+            name="confirmPasswordRegister"
+            component={ConfirmPasswordRegister}
+            options={{ title: "Confirmar senha" }}
+          />
         </>
       ) : (
         <>
           <Stack.Screen
             name="home"
             component={Home}
-            options={{ headerShown: false, gestureEnabled: true }}
+            options={{ title: "Home", gestureEnabled: true }}
+          />
+          <Stack.Screen
+            name="drawer"
+            component={Drawer}
+            options={{ title: "Home" }}
           />
         </>
       )}

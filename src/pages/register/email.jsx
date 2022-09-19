@@ -1,61 +1,68 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   SafeAreaView,
   View,
   Text,
-  TouchableOpacity,
-  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
-  TextInput,
 } from "react-native";
+import { Button, TextInput } from "react-native-paper";
 
 export default function ({ navigation, route }, params) {
-  const [cpf, setCpf] = useState(route.params.cpf);
-  const [name, setName] = useState(route.params.name);
+  const [cpf, setCpf] = useState(route.params?.cpf);
+  const [name, setName] = useState(route.params?.name);
   const [email, setEmail] = useState("");
 
+  const ref_input = useRef();
+
+  useEffect(() => {
+    ref_input.current.focus();
+  });
+  console.log(email);
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={70}
+        keyboardVerticalOffset={60}
       >
         <View style={styles.viewInput}>
-          <Text style={styles.textInput}>Digite seu email</Text>
           <TextInput
             style={styles.input}
+            label={
+              <Text
+                style={{
+                  fontSize: 26,
+                  fontWeight: "bold",
+                  width: "100%",
+                }}
+              >
+                E-mail
+              </Text>
+            }
             type={"text"}
             maxLength={50}
+            activeUnderlineColor="black"
             selectionColor={"black"}
-            placeholder="michael123@gmail.com"
-            placeholderTextColor="#909090"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
+            keyboardType={"ascii-capable"}
+            value={email != "" ? email : []}
+            onChangeText={setEmail}
+            ref={ref_input}
           />
         </View>
-        <View style={styles.viewButton}>
-          {email.length >= 10 ? (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("tel", {
-                  cpf: cpf,
-                  name: name,
-                  email: email,
-                })
-              }
-              style={styles.button}
-            >
-              <Text style={styles.textButton}>continuar</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity style={styles.buttonDisabled} disabled={true}>
-              <Text style={styles.textButton}>continuar</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+        <Button
+          style={styles.button}
+          contentStyle={styles.contentButton}
+          mode="contained"
+          buttonColor="black"
+          disabled={email.length >= 10 ? false : true}
+          onPress={() =>
+            navigation.navigate("phone", { cpf: cpf, name: name, email: email })
+          }
+        >
+          continuar
+        </Button>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -70,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  textInput: {
+  titleInput: {
     fontSize: 14,
     fontWeight: "bold",
     width: "90%",
@@ -78,36 +85,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   input: {
-    height: 50,
+    backgroundColor: "transparent",
+    height: 80,
     width: "90%",
-    fontSize: 26,
-  },
-  viewButton: {
-    height: 70,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
+    fontSize: 22,
   },
   button: {
-    backgroundColor: "black",
     width: "90%",
+    marginHorizontal: "5%",
+    marginVertical: 20,
     height: 50,
     borderRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
   },
-  textButton: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  buttonDisabled: {
-    backgroundColor: "black",
-    width: "90%",
-    height: 50,
-    borderRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    opacity: 0.3,
-  },
+  contentButton: { width: "100%", height: "100%" },
 });

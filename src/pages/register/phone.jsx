@@ -7,22 +7,23 @@ import {
   Platform,
   StyleSheet,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import MaskInput, { Masks } from "react-native-mask-input";
 import { Button, TextInput } from "react-native-paper";
 
 export default function ({ navigation, route }, params) {
-  const [cpf, setCpf] = useState("");
+  const [cpf, setCpf] = useState(route.params?.cpf);
+  const [name, setName] = useState(route.params?.name);
+  const [email, setEmail] = useState(route.params?.email);
+  const [phone, setPhone] = useState("");
 
   const ref_input = useRef();
 
   useEffect(() => {
     ref_input.current.focus();
-  });
-
+  }, []);
+  console.log(phone);
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style={"dart"} translucent={true} backgroundColor={"transt"} />
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -34,34 +35,47 @@ export default function ({ navigation, route }, params) {
             label={
               <Text
                 style={{
-                  fontSize: 30,
+                  fontSize: 26,
                   fontWeight: "bold",
                 }}
               >
-                Digite seu CPF
+                Número do telefone
               </Text>
             }
-            maxLength={14}
+            maxLength={15}
             activeUnderlineColor="black"
             selectionColor={"black"}
-            placeholder="000.000.000-00"
+            placeholder="(00) 00000-0000"
             placeholderTextColor="#909090"
             keyboardType={"number-pad"}
-            value={cpf}
-            onChangeText={setCpf}
+            value={phone != "" ? phone : []}
+            onChangeText={setPhone}
             ref={ref_input}
-            render={(props) => <MaskInput {...props} mask={Masks.BRL_CPF} />}
+            render={(props) => (
+              <MaskInput
+                {...props}
+                value={phone}
+                onChangeText={(masked, unmasked) => {
+                  setPhone(masked);
+                }}
+                mask={Masks.BRL_PHONE}
+              />
+            )}
           />
         </View>
+
         <Button
           style={styles.button}
           contentStyle={styles.contentButton}
           mode="contained"
           buttonColor="black"
-          disabled={cpf.length >= 14 ? false : true}
+          disabled={phone.length >= 14 ? false : true}
           onPress={() =>
-            navigation.navigate("login2", {
+            navigation.navigate("address", {
               cpf: cpf,
+              name: name,
+              email: email,
+              phone: phone,
             })
           }
         >
@@ -85,7 +99,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     height: 80,
     width: "90%",
-    fontSize: 26,
+    fontSize: 22,
   },
   button: {
     width: "90%",

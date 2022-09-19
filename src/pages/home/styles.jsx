@@ -4,12 +4,5 @@ export default styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 50,
-    fontWeight: "bold",
-    height: 200,
   },
 });

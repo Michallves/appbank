@@ -2,34 +2,22 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import {
   SafeAreaView,
   View,
-  Text,
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
   Pressable,
 } from "react-native";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import styles from "./styles";
 import { TextInput, Button } from "react-native-paper";
 import { FontAwesome } from "@expo/vector-icons";
 
 export default function ({ navigation, route }, params) {
-  const [email, setEmail] = useState(route.params.email);
+  const [cpf, setCpf] = useState(route.params?.cpf);
+  const [name, setName] = useState(route.params?.name);
+  const [email, setEmail] = useState(route.params?.email);
+  const [phone, setPhone] = useState(route.params?.phone);
+  const [address, setAddress] = useState(route.params?.address);
+  const [typeAccount, setTypeAccount] = useState(route.params?.typeAccount);
   const [password, setPassword] = useState("");
-
-  function login() {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-  }
-
-  const [msgError, setMsgError] = useState("");
-  const [secure, setSecure] = useState(true);
 
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
@@ -52,7 +40,7 @@ export default function ({ navigation, route }, params) {
     setPassword(
       password1 + password2 + password3 + password4 + password5 + password6
     );
-  });
+  }, [password1, password2, password3, password4, password5, password6]);
   function focus() {
     if (password.length == 6) {
       ref_input6.current.focus();
@@ -61,7 +49,7 @@ export default function ({ navigation, route }, params) {
       ref_input.current.focus();
     }
   }
-
+  const [secure, setSecure] = useState(false);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -79,7 +67,7 @@ export default function ({ navigation, route }, params) {
       ),
     });
   });
-
+  console.log(password);
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -245,48 +233,21 @@ export default function ({ navigation, route }, params) {
           mode="contained"
           buttonColor="black"
           disabled={password.length == 6 ? false : true}
-          onPress={() => login()}
+          onPress={() =>
+            navigation.navigate("confirmPasswordRegister", {
+              cpf: cpf,
+              name: name,
+              email: email,
+              phone: phone,
+              address: address,
+              typeAccount: typeAccount,
+              password: password,
+            })
+          }
         >
-          entrar
+          continuar
         </Button>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  viewInput: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  input: {
-    backgroundColor: "transparent",
-    width: 42,
-    height: 55,
-    fontSize: 17,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 40,
-  },
-  button: {
-    width: "90%",
-    marginHorizontal: "5%",
-    marginVertical: 20,
-    height: 50,
-    borderRadius: 30,
-  },
-  contentButton: { width: "100%", height: "100%" },
-  rs: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-});
