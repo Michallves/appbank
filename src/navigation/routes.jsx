@@ -17,21 +17,33 @@ import TypeAccount from "../pages/register/typeAccount";
 import PasswordRegister from "../pages/register/password/password";
 import ConfirmPasswordRegister from "../pages/register/password/confirmPassword";
 
-import Home from "../pages/home";
 import Drawer from "./drawer";
+
+import Profile from "../pages/profile";
+//Create Card
+import NameCreateCard from "../pages/createCard/name";
+import TypeCreateCard from "../pages/createCard/type";
+import FlagCreateCard from "../pages/createCard/flag";
+import DateValidyCreateCard from "../pages/createCard/dateValidy";
+//Register card
+import NameRegisterCard from "../pages/registerCard/name";
+import NumberRegisterCard from "../pages/registerCard/number";
+import CvcRegisterCard from "../pages/registerCard/cvc";
+import DateValidyRegisterCard from "../pages/registerCard/dateValidy";
 
 const Stack = createNativeStackNavigator();
 
-export default function () {
+export default function ({ navigation }) {
   const { auth } = useData();
 
   return (
     <Stack.Navigator
+      initialRouteName="dateValidyCreateCard"
       screenOptions={{
         headerBackTitleVisible: false,
-        headerShadowVisible: false,
+        headerShadowVisible: true,
         headerTintColor: "black",
-        headerTitleAlignn: "center",
+        headerTitleAlign: "center",
       }}
     >
       {auth === false ? (
@@ -99,13 +111,54 @@ export default function () {
         <>
           <Stack.Screen
             name="home"
-            component={Home}
-            options={{ title: "Home", gestureEnabled: true }}
+            component={Drawer}
+            options={{ gestureEnabled: true, headerShown: false }}
           />
           <Stack.Screen
-            name="drawer"
-            component={Drawer}
-            options={{ title: "Home" }}
+            name="profile"
+            component={Profile}
+            options={{ title: "Perfil" }}
+          />
+
+          <Stack.Screen
+            name="nameCreateCard"
+            component={NameCreateCard}
+            options={{ title: "Criar cartão" }}
+          />
+          <Stack.Screen
+            name="typeCreateCard"
+            component={TypeCreateCard}
+            options={{ title: "Tipo de cartão" }}
+          />
+          <Stack.Screen
+            name="flagCreateCard"
+            component={FlagCreateCard}
+            options={{ title: "Bandeira" }}
+          />
+          <Stack.Screen
+            name="dateValidyCreateCard"
+            component={DateValidyCreateCard}
+            options={{ title: "Validade" }}
+          />
+          <Stack.Screen
+            name="nameRegisterCard"
+            component={NameRegisterCard}
+            options={{ title: "Cadastrar cartão" }}
+          />
+          <Stack.Screen
+            name="numberRegisterCard"
+            component={NumberRegisterCard}
+            options={{ title: "Número" }}
+          />
+          <Stack.Screen
+            name="cvcRegisterCard"
+            component={CvcRegisterCard}
+            options={{ title: "CVC" }}
+          />
+          <Stack.Screen
+            name="dateValidyRegisterCard"
+            component={DateValidyRegisterCard}
+            options={{ title: "Data de Validade" }}
           />
         </>
       )}

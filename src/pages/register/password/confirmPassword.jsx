@@ -80,7 +80,7 @@ export default function ({ navigation, route }, params) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const db = getFirestore();
-          setDoc(doc(db, "users", userCredential.user.uid), {
+          setDoc(doc(db, "users", userCredential.uid), {
             cpf: cpf,
             name: name,
             email: email,

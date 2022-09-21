@@ -7,6 +7,7 @@ import { useData } from "../../navigation/context";
 
 export default ({ navigation }) => {
   const { user } = useData();
+
   const DATA = [
     {
       id: 0,
@@ -45,19 +46,6 @@ export default ({ navigation }) => {
     },
   ];
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <Text style={{ fontSize: 30, fontWeight: "bold" }}>ALLBANK</Text>
-      ),
-      headerTitle: " ",
-      headerRight: () => (
-        <Pressable onPress={() => navigation.openDrawer()}>
-          <Ionicons name="menu" size={40} color="black" />
-        </Pressable>
-      ),
-    });
-  });
   const [active, setActive] = useState("");
   return (
     <SafeAreaView style={styles.container}>

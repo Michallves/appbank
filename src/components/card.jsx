@@ -10,28 +10,16 @@ export function Card({ item }) {
           source={require("../assets/mastercard.png")}
           style={styles.mastercard}
         />
-      ) : (
-        <></>
-      )}
-      {item.flag === "visa" ? (
+      ) : item.flag === "visa" ? (
         <Image source={require("../assets/visa.png")} style={styles.visa} />
-      ) : (
-        <></>
-      )}
-      {item.flag === "elo" ? (
+      ) : item.flag === "elo" ? (
         <Image source={require("../assets/elo.png")} style={styles.elo} />
-      ) : (
-        <></>
-      )}
-      {item.flag === "americanexpress" ? (
+      ) : item.flag === "americanexpress" ? (
         <Image
           source={require("../assets/americanexpress.png")}
           style={styles.americanexpress}
         />
-      ) : (
-        <></>
-      )}
-      {item.flag === "hipercard" ? (
+      ) : item.flag === "hipercard" ? (
         <Image
           source={require("../assets/hipercard.png")}
           style={styles.hipercard}
@@ -39,6 +27,7 @@ export function Card({ item }) {
       ) : (
         <></>
       )}
+
       <Text style={styles.number}>
         {item.number.substring(0, 4)}
         {"      "}

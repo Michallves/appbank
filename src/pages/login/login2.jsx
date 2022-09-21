@@ -267,14 +267,14 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "transparent",
-    width: 42,
+    width: 45,
     height: 55,
     fontSize: 17,
     fontWeight: "bold",
     textAlign: "center",
     marginLeft: 5,
     marginRight: 5,
-    marginTop: 40,
+    marginTop: 10,
   },
   button: {
     width: "90%",

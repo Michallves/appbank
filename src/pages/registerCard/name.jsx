@@ -7,22 +7,19 @@ import {
   Platform,
   StyleSheet,
 } from "react-native";
-import MaskInput, { Masks } from "react-native-mask-input";
-import { StatusBar } from "expo-status-bar";
 import { Button, TextInput } from "react-native-paper";
 
 export default function ({ navigation, route }, params) {
-  const [cpf, setCpf] = useState("");
+  const [name, setName] = useState("");
 
   const ref_input = useRef();
 
   useEffect(() => {
     ref_input.current.focus();
   });
-  console.log(cpf);
+  console.log(name);
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style={"dart"} translucent={true} backgroundColor={"transt"} />
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -34,23 +31,22 @@ export default function ({ navigation, route }, params) {
             label={
               <Text
                 style={{
-                  fontSize: 30,
+                  fontSize: 26,
                   fontWeight: "bold",
+                  width: "100%",
                 }}
               >
-                Qual seu CPF ?
+                Nome completo
               </Text>
             }
-            maxLength={14}
+            type={"text"}
+            maxLength={50}
             activeUnderlineColor="black"
             selectionColor={"black"}
-            placeholder="000.000.000-00"
-            placeholderTextColor="#909090"
-            keyboardType={"number-pad"}
-            value={cpf != "" ? cpf : []}
+            keyboardType={"ascii-capable"}
+            value={name != "" ? name : []}
+            onChangeText={setName}
             ref={ref_input}
-            onChangeText={setCpf}
-            render={(props) => <MaskInput {...props} mask={Masks.BRL_CPF} />}
           />
         </View>
         <Button
@@ -58,8 +54,8 @@ export default function ({ navigation, route }, params) {
           contentStyle={styles.contentButton}
           mode="contained"
           buttonColor="black"
-          disabled={cpf.length == 14 ? false : true}
-          onPress={() => navigation.navigate("name", { cpf: cpf })}
+          disabled={name.length >= 10 ? false : true}
+          onPress={() => navigation.navigate("numberRegisterCard", { name: name })}
         >
           continuar
         </Button>
@@ -77,11 +73,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  titleInput: {
+    fontSize: 14,
+    fontWeight: "bold",
+    width: "90%",
+    textAlign: "left",
+    marginTop: 20,
+  },
   input: {
     backgroundColor: "transparent",
     height: 80,
     width: "90%",
-    fontSize: 26,
+    fontSize: 22,
   },
   button: {
     width: "90%",

@@ -6,7 +6,8 @@ import { getFirestore, doc, onSnapshot } from "firebase/firestore";
 const DataContext = createContext();
 
 export default function DataProvider({ children }) {
-  const [user, setUser] = useState();
+  const [idUser, setIdUser] = useState("");
+  const [user, setUser] = useState("");
   const [auth, setAuth] = useState(false);
 
   useEffect(() => {
@@ -14,6 +15,7 @@ export default function DataProvider({ children }) {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setAuth(true);
+        setIdUser(user.uid);
         const db = getFirestore();
         onSnapshot(doc(db, "users", user.uid), (doc) => {
           setUser(doc.data());
@@ -25,10 +27,11 @@ export default function DataProvider({ children }) {
   });
 
   const dataProvider = {
+    idUser,
     user,
     auth,
   };
-  console.log(auth, user);
+
   return (
     <DataContext.Provider value={dataProvider}>{children}</DataContext.Provider>
   );
@@ -37,10 +40,7 @@ export default function DataProvider({ children }) {
 export function useData() {
   const context = useContext(DataContext);
 
-  const { user, auth } = context;
+  const { idUser, user, auth } = context;
 
-  return {
-    user,
-    auth,
-  };
+  return { idUser, user, auth };
 }
