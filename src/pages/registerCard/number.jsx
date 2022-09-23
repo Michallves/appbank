@@ -115,27 +115,27 @@ export default function ({ navigation, route }, params) {
                   }}
                 />
                 <>
-                  {flag == "mastercard" ? (
+                  {flag == "Mastercard" ? (
                     <Image
                       source={require("../../assets/mastercard.png")}
                       style={styles.mastercard}
                     />
-                  ) : flag == "visa" ? (
+                  ) : flag == "Visa" ? (
                     <Image
                       source={require("../../assets/visa.png")}
                       style={styles.visa}
                     />
-                  ) : flag == "elo" ? (
+                  ) : flag == "Elo" ? (
                     <Image
                       source={require("../../assets/elo.png")}
                       style={styles.elo}
                     />
-                  ) : flag == "americanexpress" ? (
+                  ) : flag == "American Express" ? (
                     <Image
                       source={require("../../assets/americanexpress.png")}
                       style={styles.americanexpress}
                     />
-                  ) : flag == "hipercard" ? (
+                  ) : flag == "Hipercard" ? (
                     <Image
                       source={require("../../assets/hipercard.png")}
                       style={styles.hipercard}
@@ -153,7 +153,7 @@ export default function ({ navigation, route }, params) {
           contentStyle={styles.contentButton}
           mode="contained"
           buttonColor="black"
-          disabled={number.length == 16 ? false : true}
+          disabled={number.length == 16 && flag != "" ? false : true}
           onPress={() =>
             navigation.navigate("cvcRegisterCard", {
               name: name,

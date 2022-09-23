@@ -4,10 +4,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useData } from "./context";
 
 import Preload from "../pages/preload";
-
-import Login from "../pages/login/login";
-import Login2 from "../pages/login/login2";
-
+//
+import CpfLogin from "../pages/login/cpf";
+import PasswordLogin from "../pages/login/password";
+//
 import Cpf from "../pages/register/cpf";
 import Name from "../pages/register/name";
 import Email from "../pages/register/email";
@@ -16,10 +16,13 @@ import Address from "../pages/register/address";
 import TypeAccount from "../pages/register/typeAccount";
 import PasswordRegister from "../pages/register/password/password";
 import ConfirmPasswordRegister from "../pages/register/password/confirmPassword";
-
+//
 import Drawer from "./drawer";
-
-import Profile from "../pages/profile";
+import Card from "../pages/card";
+//Profile
+import Profile from "../pages/profile/profile";
+import EditNameProfile from "../pages/profile/name";
+import EditPasswordProfile from "../pages/profile/password";
 //Create Card
 import NameCreateCard from "../pages/createCard/name";
 import TypeCreateCard from "../pages/createCard/type";
@@ -29,7 +32,7 @@ import DateValidyCreateCard from "../pages/createCard/dateValidy";
 import NameRegisterCard from "../pages/registerCard/name";
 import NumberRegisterCard from "../pages/registerCard/number";
 import CvcRegisterCard from "../pages/registerCard/cvc";
-import DateValidyRegisterCard from "../pages/registerCard/dateValidy";
+import DateValidityRegisterCard from "../pages/registerCard/dateValidity";
 
 const Stack = createNativeStackNavigator();
 
@@ -38,7 +41,7 @@ export default function ({ navigation }) {
 
   return (
     <Stack.Navigator
-      initialRouteName="dateValidyCreateCard"
+      initialRouteName=""
       screenOptions={{
         headerBackTitleVisible: false,
         headerShadowVisible: true,
@@ -56,12 +59,12 @@ export default function ({ navigation }) {
 
           <Stack.Screen
             name="login"
-            component={Login}
+            component={CpfLogin}
             options={{ title: "entrar" }}
           />
           <Stack.Screen
-            name="login2"
-            component={Login2}
+            name="passwordLogin"
+            component={PasswordLogin}
             options={{
               title: "senha",
             }}
@@ -115,11 +118,25 @@ export default function ({ navigation }) {
             options={{ gestureEnabled: true, headerShown: false }}
           />
           <Stack.Screen
+            name="card"
+            component={Card}
+            options={{ title: "Cartão" }}
+          />
+          <Stack.Screen
             name="profile"
             component={Profile}
             options={{ title: "Perfil" }}
           />
-
+          <Stack.Screen
+            name="editNameProfile"
+            component={EditNameProfile}
+            options={{ title: "Editar nome" }}
+          />
+          <Stack.Screen
+            name="editPasswordProfile"
+            component={EditPasswordProfile}
+            options={{ title: "Editar senha" }}
+          />
           <Stack.Screen
             name="nameCreateCard"
             component={NameCreateCard}
@@ -156,8 +173,8 @@ export default function ({ navigation }) {
             options={{ title: "CVC" }}
           />
           <Stack.Screen
-            name="dateValidyRegisterCard"
-            component={DateValidyRegisterCard}
+            name="dateValidityRegisterCard"
+            component={DateValidityRegisterCard}
             options={{ title: "Data de Validade" }}
           />
         </>

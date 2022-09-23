@@ -15,7 +15,7 @@ export default function ({ navigation, route }, params) {
   const [name, setName] = useState(route.params?.name);
   const [email, setEmail] = useState(route.params?.email);
   const [phone, setPhone] = useState(route.params?.phone);
-  const [address, setAddress] = useState();
+  const [address, setAddress] = useState([]);
 
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
@@ -31,7 +31,7 @@ export default function ({ navigation, route }, params) {
       neighborhood: neighborhood,
       number: number,
     });
-  }, [state, city, street, neighborhood, number]);
+  }, []);
 
   const ref_input = useRef();
   const ref_input2 = useRef();

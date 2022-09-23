@@ -1,58 +1,79 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Text, View, FlatList, SafeAreaView, Pressable } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  FlatList,
+  SafeAreaView,
+  Pressable,
+  Image,
+  Text,
+  View,
+} from "react-native";
 import styles from "./styles";
-import { Ionicons } from "@expo/vector-icons";
-import { Card } from "../../components/card";
 import { useData } from "../../navigation/context";
 
 export default ({ navigation }) => {
-  const { user } = useData();
-
-  const DATA = [
-    {
-      id: 0,
-      name: "Michael Alves Pereira",
-      number: "1155.4551.5154.5451",
-      flag: "mastercard",
-      dateExpires: "02/26",
-    },
-    {
-      id: 2,
-      name: "Junior Mama Rola",
-      number: "1155.4551.5154.5451",
-      flag: "visa",
-      dateExpires: "02/26",
-    },
-    {
-      id: 3,
-      name: "João Vitor Rei delas",
-      number: "1155.4551.5154.5451",
-      flag: "elo",
-      dateExpires: "02/26",
-    },
-    {
-      id: 4,
-      name: "Felipe Oreia",
-      number: "1155.4551.5154.5451",
-      flag: "americanexpress",
-      dateExpires: "02/26",
-    },
-    {
-      id: 5,
-      name: "Paulo Eronbras Henrique",
-      number: "1155.4551.5154.5451",
-      flag: "hipercard",
-      dateExpires: "02/26",
-    },
-  ];
-
+  const { user, cards } = useData();
   const [active, setActive] = useState("");
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={DATA}
+        data={cards}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Card item={item} />}
+        renderItem={({ item }) => (
+          <Pressable
+            onPress={() => {
+              navigation.navigate("card", { id: item.id });
+            }}
+            style={styles.card}
+          >
+            <Image
+              source={require("../../assets/chip.png")}
+              style={styles.ship}
+            />
+            {item.flag == "Mastercard" ? (
+              <Image
+                source={require("../../assets/mastercard.png")}
+                style={styles.mastercard}
+              />
+            ) : item.flag == "Visa" ? (
+              <Image
+                source={require("../../assets/visa.png")}
+                style={styles.visa}
+              />
+            ) : item.flag == "Elo" ? (
+              <Image
+                source={require("../../assets/elo.png")}
+                style={styles.elo}
+              />
+            ) : item.flag == "American Express" ? (
+              <Image
+                source={require("../../assets/americanexpress.png")}
+                style={styles.americanexpress}
+              />
+            ) : item.flag == "Hipercard" ? (
+              <Image
+                source={require("../../assets/hipercard.png")}
+                style={styles.hipercard}
+              />
+            ) : (
+              <></>
+            )}
+
+            <Text style={styles.number}>
+              {String(item.number).substring(0, 4)}
+              {"     "}
+              <Text style={{ fontSize: 18, letterSpacing: -5 }}>＊＊＊＊</Text>
+              {"     "}
+              <Text style={{ fontSize: 18, letterSpacing: -5 }}>＊＊＊＊</Text>
+              {"     "}
+              {String(item.number).substring(12, 16)}
+            </Text>
+            <Text style={styles.holder}>Titular do cartão</Text>
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.exp}>Validade:</Text>
+            <Text style={styles.valid}>{item.dateValidity}</Text>
+          </Pressable>
+        )}
       />
     </SafeAreaView>
   );

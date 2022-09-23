@@ -15,21 +15,18 @@ export default function ({ navigation, route }, params) {
           onValueChange={(newValue) => setFlag(newValue)}
           value={flag}
         >
-          <Pressable
-            onPress={() => setFlag("credit")}
-            style={styles.radioButton}
-          >
+          <Pressable onPress={() => setFlag("Visa")} style={styles.radioButton}>
             <View style={styles.radio}>
               <RadioButton.Android
                 color="black"
-                value="visa"
+                value="Visa"
                 style={styles.radio}
               />
             </View>
             <Text style={styles.textRadio}>Visa</Text>
           </Pressable>
           <Pressable
-            onPress={() => setFlag("credit")}
+            onPress={() => setFlag("Mastercard")}
             style={styles.radioButton}
           >
             <View style={styles.radio}>
@@ -41,10 +38,7 @@ export default function ({ navigation, route }, params) {
             </View>
             <Text style={styles.textRadio}>Mastercard</Text>
           </Pressable>
-          <Pressable
-            onPress={() => setFlag("credit")}
-            style={styles.radioButton}
-          >
+          <Pressable onPress={() => setFlag("Elo")} style={styles.radioButton}>
             <View style={styles.radio}>
               <RadioButton.Android
                 color="black"
@@ -55,7 +49,7 @@ export default function ({ navigation, route }, params) {
             <Text style={styles.textRadio}>Elo</Text>
           </Pressable>
           <Pressable
-            onPress={() => setFlag("credit")}
+            onPress={() => setFlag("Hipercard")}
             style={styles.radioButton}
           >
             <View style={styles.radio}>
@@ -68,7 +62,7 @@ export default function ({ navigation, route }, params) {
             <Text style={styles.textRadio}>Hipercard</Text>
           </Pressable>
           <Pressable
-            onPress={() => setFlag("credit")}
+            onPress={() => setFlag("American Express")}
             style={styles.radioButton}
           >
             <View style={styles.radio}>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -7,12 +7,14 @@ import {
 } from "@react-navigation/drawer";
 import Home from "../pages/home";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { useData } from "./context";
 import { getAuth, signOut } from "firebase/auth";
+import { useData } from "./context";
+import { Avatar } from "react-native-paper";
 
 const Drawer = createDrawerNavigator();
 
 export default function ({ navigation }) {
+  const { user } = useData();
   function logout() {
     const auth = getAuth();
     signOut(auth)
@@ -21,41 +23,38 @@ export default function ({ navigation }) {
   }
 
   function CustomDrawerContent(props) {
-    const { user } = useData();
     return (
       <DrawerContentScrollView {...props}>
-        <View
+        <Pressable
+          onPress={() => navigation.navigate("profile")}
           style={{
-            height: 120,
-            alignItems: "flex-start",
+            height: 150,
+            width: "100%",
+            alignItems: "center",
             justifyContent: "space-evenly",
-            marginLeft: 15,
           }}
         >
-          <View>
-            {"" == "" ? (
-              <MaterialCommunityIcons
-                name="account-circle-outline"
-                size={60}
-                color="black"
-              />
-            ) : (
-              <Image />
-            )}
-          </View>
+          {user?.image ? (
+            <Avatar.Image size={70} source={{ uri: user?.image }} />
+          ) : (
+            <Avatar.Text
+              size={70}
+              label={String(user?.name).toLocaleUpperCase().substring(0, 2)}
+            />
+          )}
 
           <Text
-            numberOfLines={1}
+            numberOfLines={2}
             style={{
               fontSize: 18,
               fontWeight: "bold",
-              marginLeft: 5,
-              marginRight: 20,
+              width: "85%",
+              textAlign: "center",
             }}
           >
-            {user.name}
+            {user?.name}
           </Text>
-        </View>
+        </Pressable>
         <DrawerItem
           label={() => <Text style={{ fontSize: 16, left: -12 }}>Perfil</Text>}
           onPress={() => navigation.navigate("profile")}
@@ -74,7 +73,7 @@ export default function ({ navigation }) {
           onPress={() => navigation.navigate("nameCreateCard")}
           icon={() => (
             <MaterialCommunityIcons
-              name="credit-card-chip-outline"
+              name="credit-card-plus-outline"
               size={30}
               color="black"
             />
@@ -88,7 +87,7 @@ export default function ({ navigation }) {
           onPress={() => navigation.navigate("nameRegisterCard")}
           icon={() => (
             <MaterialCommunityIcons
-              name="credit-card-plus-outline"
+              name="credit-card-chip-outline"
               size={30}
               color="black"
             />

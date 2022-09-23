@@ -5,22 +5,14 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  StyleSheet,
 } from "react-native";
-import styles from "./styles";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { TextInput, Button } from "react-native-paper";
 import { FontAwesome } from "@expo/vector-icons";
+import { getAuth, updatePassword } from "firebase/auth";
 
-export default function ({ navigation, route }, params) {
-  const [cpf, setCpf] = useState(route.params.cpf);
-  const [name, setName] = useState(route.params.name);
-  const [email, setEmail] = useState(route.params.email);
-  const [phone, setPhone] = useState(route.params.phone);
-  const [address, setAddress] = useState(route.params.address);
-  const [typeAccount, setTypeAccount] = useState(route.params.typeAccount);
-  const [password, setPassword] = useState(route.params.password);
-  const [confirmPassword, setConfirmPassword] = useState("");
+export default function ({ navigation }) {
+  const [newPassword, setNewPassword] = useState("");
 
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
@@ -37,23 +29,18 @@ export default function ({ navigation, route }, params) {
   const ref_input6 = useRef();
 
   useEffect(() => {
-    ref_input.current.focus();
-  }, []);
-  useEffect(() => {
-    setConfirmPassword(
+    setNewPassword(
       password1 + password2 + password3 + password4 + password5 + password6
     );
   }, [password1, password2, password3, password4, password5, password6]);
-
   function focus() {
-    if (password.length == 6) {
+    if (newPassword.length == 6) {
       ref_input6.current.focus();
     }
-    if (password.length == 0) {
+    if (newPassword.length == 0) {
       ref_input.current.focus();
     }
   }
-
   const [secure, setSecure] = useState(false);
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -73,34 +60,16 @@ export default function ({ navigation, route }, params) {
     });
   });
 
-  function register() {
-    if (password == confirmPassword) {
-      const auth = getAuth();
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const db = getFirestore();
-          setDoc(doc(db, "users", userCredential.user.uid), {
-            cpf: cpf,
-            name: name,
-            email: email,
-            phone: phone,
-            address: address,
-            typeAccount: typeAccount,
-          }).catch((error) => {
-            window.alert(error.code);
-            window.alert(error.message);
-          });
-        })
-        .catch((error) => {
-          window.alert(error.code);
-          window.alert(error.message);
-        });
-    } else {
-      window.alert("Senhas desiguais");
-    }
-  }
+  function editPassword() {
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-  console.log(confirmPassword);
+    updatePassword(user, newPassword)
+      .then(() => {
+        navigation.goBack();
+      })
+      .catch((error) => {});
+  }
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -265,12 +234,49 @@ export default function ({ navigation, route }, params) {
           contentStyle={styles.contentButton}
           mode="contained"
           buttonColor="black"
-          disabled={confirmPassword.length == 6 ? false : true}
-          onPress={() => register()}
+          disabled={newPassword.length == 6 ? false : true}
+          onPress={() => editPassword()}
         >
-          continuar
+          Salvar
         </Button>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  viewInput: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
+  input: {
+    backgroundColor: "transparent",
+    width: 45,
+    height: 55,
+    fontSize: 17,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginLeft: 5,
+    marginRight: 5,
+    marginTop: 10,
+  },
+  button: {
+    width: "90%",
+    marginHorizontal: "5%",
+    marginVertical: 20,
+    height: 50,
+    borderRadius: 30,
+  },
+  contentButton: { width: "100%", height: "100%" },
+  rs: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+});

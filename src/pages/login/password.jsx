@@ -15,7 +15,7 @@ import { FontAwesome } from "@expo/vector-icons";
 export default function ({ navigation, route }, params) {
   const [email, setEmail] = useState(route.params.email);
   const [password, setPassword] = useState("");
-
+  console.log(email);
   function login() {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)

@@ -132,7 +132,7 @@ export default function ({ navigation, route }, params) {
           buttonColor="black"
           disabled={cvc.length == 3 ? false : true}
           onPress={() =>
-            navigation.navigate("dateValidyRegisterCard", {
+            navigation.navigate("dateValidityRegisterCard", {
               name: name,
               number: number,
               flag: flag,

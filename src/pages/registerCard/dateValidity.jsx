@@ -4,6 +4,7 @@ import { Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import firebase from "../../config/firebase";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { uuidv4 } from "@firebase/util";
 import { useData } from "../../navigation/context";
 
 export default function ({ navigation, route }, params) {
@@ -12,29 +13,39 @@ export default function ({ navigation, route }, params) {
   const [number, setNumber] = useState(route.params?.number);
   const [flag, setFlag] = useState(route.params?.flag);
   const [cvc, setCvc] = useState(route.params?.cvc);
-  const [dateValidy, setDateValidy] = useState("");
+  const [dateValidity, setDateValidity] = useState("");
+
+  const [mm, setMm] = useState("");
+  const [yy, setYy] = useState("");
 
   useEffect(() => {
-    setDateValidy(mm + "/" + yy);
-  });
+    setDateValidity(mm + "/" + yy);
+  }, [mm, yy]);
 
-  const [mm, setMm] = useState("09");
-  const [yy, setYy] = useState("2022");
+  useEffect(() => {
+    var date = new Date();
+
+    var month = String(date.getMonth() + 1).padStart(2, "0");
+    var year = String(date.getFullYear()).toString().slice(-2);
+    setMm(month);
+    setYy(year);
+  }, []);
 
   function registerCard() {
     const db = getFirestore();
-    setDoc(doc(db, "users", idUser, "cards", number), {
+    setDoc(doc(db, "users", idUser, "cards", uuidv4()), {
       name: name,
       number: number,
       flag: flag,
       cvc: cvc,
-      dateValidy: dateValidy,
+      dateValidity: dateValidity,
       state: "waiting",
+      created: false,
     }).then(() => {
       navigation.navigate("home");
     });
   }
-  console.log(date);
+  console.log(dateValidity);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.view}>
@@ -70,17 +81,17 @@ export default function ({ navigation, route }, params) {
             selectedValue={yy}
             onValueChange={(itemValue, itemIndex) => setYy(itemValue)}
           >
-            <Picker.Item label="2017" value="17" />
-            <Picker.Item label="2018" value="18" />
-            <Picker.Item label="2019" value="19" />
-            <Picker.Item label="2020" value="20" />
-            <Picker.Item label="2021" value="21" />
-            <Picker.Item label="2022" value="22" />
-            <Picker.Item label="2023" value="23" />
-            <Picker.Item label="2024" value="24" />
-            <Picker.Item label="2025" value="25" />
-            <Picker.Item label="2026" value="26" />
-            <Picker.Item label="2027" value="27" />
+            <Picker.Item label="17" value="17" />
+            <Picker.Item label="18" value="18" />
+            <Picker.Item label="19" value="19" />
+            <Picker.Item label="20" value="20" />
+            <Picker.Item label="21" value="21" />
+            <Picker.Item label="22" value="22" />
+            <Picker.Item label="23" value="23" />
+            <Picker.Item label="24" value="24" />
+            <Picker.Item label="25" value="25" />
+            <Picker.Item label="26" value="26" />
+            <Picker.Item label="27" value="27" />
           </Picker>
         </View>
       </View>

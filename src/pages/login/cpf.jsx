@@ -7,19 +7,44 @@ import {
   Platform,
   StyleSheet,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import MaskInput, { Masks } from "react-native-mask-input";
 import { Button, TextInput } from "react-native-paper";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  getFirestore,
+} from "firebase/firestore";
 
 export default function ({ navigation, route }, params) {
-  const [name, setName] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [email, setEmail] = useState("");
 
   const ref_input = useRef();
 
   useEffect(() => {
     ref_input.current.focus();
-  }, []);
-  console.log(name);
+  });
+
+  useEffect(() => {
+    const db = getFirestore();
+    const cardsCreated = onSnapshot(
+      query(collection(db, "users"), where("cpf", "==", cpf)),
+      (querySnapshot) => {
+        const cd = [];
+        querySnapshot.forEach((doc) => {
+          cd.push(doc.data().email);
+        });
+        setEmail(String(cd));
+      }
+    );
+  }, [cpf]);
+
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style={"dart"} translucent={true} backgroundColor={"transt"} />
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -31,22 +56,23 @@ export default function ({ navigation, route }, params) {
             label={
               <Text
                 style={{
-                  fontSize: 26,
+                  fontSize: 30,
                   fontWeight: "bold",
-                  width: "100%",
                 }}
               >
-                Nome completo
+                Digite seu CPF
               </Text>
             }
-            type={"text"}
-            maxLength={50}
+            maxLength={14}
             activeUnderlineColor="black"
             selectionColor={"black"}
-            keyboardType={"ascii-capable"}
-            value={name != "" ? name : []}
-            onChangeText={setName}
+            placeholder="000.000.000-00"
+            placeholderTextColor="#909090"
+            keyboardType={"number-pad"}
+            value={cpf}
+            onChangeText={setCpf}
             ref={ref_input}
+            render={(props) => <MaskInput {...props} mask={Masks.BRL_CPF} />}
           />
         </View>
         <Button
@@ -54,9 +80,11 @@ export default function ({ navigation, route }, params) {
           contentStyle={styles.contentButton}
           mode="contained"
           buttonColor="black"
-          disabled={name.length >= 10 ? false : true}
+          disabled={cpf.length >= 14 ? false : true}
           onPress={() =>
-            navigation.navigate("numberRegisterCard", { name: name })
+            navigation.navigate("passwordLogin", {
+              email: email,
+            })
           }
         >
           continuar
@@ -75,18 +103,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  titleInput: {
-    fontSize: 14,
-    fontWeight: "bold",
-    width: "90%",
-    textAlign: "left",
-    marginTop: 20,
-  },
   input: {
     backgroundColor: "transparent",
     height: 80,
     width: "90%",
-    fontSize: 22,
+    fontSize: 26,
   },
   button: {
     width: "90%",

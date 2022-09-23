@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -7,22 +7,25 @@ import {
   Platform,
   StyleSheet,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import MaskInput, { Masks } from "react-native-mask-input";
 import { Button, TextInput } from "react-native-paper";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { useData } from "../../navigation/context";
 
 export default function ({ navigation, route }, params) {
-  const [cpf, setCpf] = useState("");
+  const { idUser } = useData();
+  const [name, setName] = useState(route.params?.name);
 
-  const ref_input = useRef();
+  function editName() {
+    const db = getFirestore();
+    updateDoc(doc(db, "users", idUser), {
+      name: name,
+    });
+    navigation.goBack();
+  }
 
-  useEffect(() => {
-    ref_input.current.focus();
-  });
-
+  console.log(name);
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style={"dart"} translucent={true} backgroundColor={"transt"} />
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -34,23 +37,21 @@ export default function ({ navigation, route }, params) {
             label={
               <Text
                 style={{
-                  fontSize: 30,
+                  fontSize: 26,
                   fontWeight: "bold",
+                  width: "100%",
                 }}
               >
-                Digite seu CPF
+                Nome completo
               </Text>
             }
-            maxLength={14}
+            type={"text"}
+            maxLength={50}
             activeUnderlineColor="black"
             selectionColor={"black"}
-            placeholder="000.000.000-00"
-            placeholderTextColor="#909090"
-            keyboardType={"number-pad"}
-            value={cpf}
-            onChangeText={setCpf}
-            ref={ref_input}
-            render={(props) => <MaskInput {...props} mask={Masks.BRL_CPF} />}
+            keyboardType={"ascii-capable"}
+            value={name != null ? name : []}
+            onChangeText={setName}
           />
         </View>
         <Button
@@ -58,14 +59,10 @@ export default function ({ navigation, route }, params) {
           contentStyle={styles.contentButton}
           mode="contained"
           buttonColor="black"
-          disabled={cpf.length >= 14 ? false : true}
-          onPress={() =>
-            navigation.navigate("login2", {
-              cpf: cpf,
-            })
-          }
+          disabled={name?.length >= 10 ? false : true}
+          onPress={() => editName()}
         >
-          continuar
+          Salvar
         </Button>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -81,11 +78,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  titleInput: {
+    fontSize: 14,
+    fontWeight: "bold",
+    width: "90%",
+    textAlign: "left",
+    marginTop: 20,
+  },
   input: {
     backgroundColor: "transparent",
     height: 80,
     width: "90%",
-    fontSize: 26,
+    fontSize: 22,
   },
   button: {
     width: "90%",

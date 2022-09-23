@@ -18,7 +18,7 @@ export default function ({ navigation, route }, params) {
 
   useEffect(() => {
     ref_input.current.focus();
-  });
+  }, []);
   console.log(email);
   return (
     <SafeAreaView style={styles.container}>
